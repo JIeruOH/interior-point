@@ -40,9 +40,11 @@ Below is a simple example problem:
 
 ```python
 if __name__ == '__main__':
-    c = [1, 2, 0]
+    # maximize z = x1 + 2x2
+    # x1 + x2 <= 8
+    c = [1, 2]
     A = [
-        [1, 1, 1],
+        [1, 1],
     ]
     b = [8]
     eps = 1e-3
