@@ -29,6 +29,9 @@ def pivot(table, pivot_row_idx, pivot_col_idx):
 
 
 def simplex(c, A, b):
+    c = [Fraction(i) for i in c]
+    A = [[Fraction(j) for j in i] for i in A]
+    b = [Fraction(i) for i in b]
     m, n = len(A), len(c)
     non_basic_variables = ["x" + str(i) for i in range(1, n + 1)] + ["s" + str(i) for i in range(1, m + 1)]
     basic_variables = ["s" + str(i) for i in range(1, m + 1)]
@@ -72,14 +75,6 @@ def simplex(c, A, b):
     for idx, variable in enumerate(basic_variables):
         if variable[0] == 'x':
             solution[int(variable[1:]) - 1] = table[idx][-1]
-
-    return solution, table[-1][-1]
-
-
-def run(c, A, b):
-    c = [Fraction(i) for i in c]
-    A = [[Fraction(j) for j in i] for i in A]
-    b = [Fraction(i) for i in b]
-    solution, objective_value = simplex(c, A, b)
     print(f"Optimal Solution: [{' '.join([f'{val.numerator}/{val.denominator}' for val in solution])}]")
-    print(f"Optimal Value: {objective_value.numerator}/{objective_value.denominator}")
+    print(f"Optimal Value: {table[-1][-1].numerator}/{table[-1][-1].denominator}")
+    return solution, table[-1][-1]
