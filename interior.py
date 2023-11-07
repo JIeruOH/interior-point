@@ -82,7 +82,7 @@ def projected_gradient(A, c):
     Finds the projected gradient
     :param A: matrix
     :param c: vector
-    :return:
+    :return: projected gradient
     """
     I = np.identity(A.shape[1])
     P = I - A.T @ np.linalg.inv(A @ A.T) @ A
@@ -108,8 +108,14 @@ def interior_point(c, A, b, eps, alpha=0.5):
     :param b: A vector of right-hand side numbers
     :param eps: The approximation accuracy
     :param alpha: gradient coefficient
-    :return:
+    :return: Optimal solution for the problem
     """
+    A = [i.copy() for i in A]
+    for i in range(len(A)):
+        additional = [int(i == j) for j in range(len(A))]
+        A[i] += additional
+    c = c + [0] * len(A)
+
     c = np.array([[float(i) for i in c]]).T
     A = np.array([[float(j) for j in i] for i in A])
     b = np.array([[float(i) for i in b]]).T
@@ -139,13 +145,3 @@ def interior_point(c, A, b, eps, alpha=0.5):
     print('Optimal Value:')
     print(round((c.T @ x)[0][0], 3))
     return x
-
-
-c = [1, 2, 0, 0]
-A = [
-    [1, 1, 1, 0],
-    [0, 1, 0, 1]
-]
-b = [2, 3]
-eps = 1e-3
-interior_point(c, A, b, eps)
