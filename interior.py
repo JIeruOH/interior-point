@@ -139,3 +139,13 @@ def interior_point(c, A, b, eps, alpha=0.5):
     print('Optimal Value:')
     print(round((c.T @ x)[0][0], 3))
     return x
+
+
+c = [1, 2, 0, 0]
+A = [
+    [1, 1, 1, 0],
+    [0, 1, 0, 1]
+]
+b = [2, 3]
+eps = 1e-3
+interior_point(c, A, b, eps)
