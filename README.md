@@ -30,8 +30,8 @@ Where:
 
 ### How to Run
 
-1. Define the Linear Programming Problem in the main section of the script, `c`, `A`, `b`, and `eps`.
-2. Run the `interior_point` function with arguments `c`, `A`, `b`, and `eps`.
+1. Define the Linear Programming Problem in the main section of the script, `c`, `A`, `b` and `eps`.
+2. Run the `interior_point` function with arguments `c`, `A`, `b` and `eps`.
 
 
 ## Example
