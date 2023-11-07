@@ -2,9 +2,9 @@ from interior import interior_point
 from simplex import simplex
 
 # example
-c = [1, 2, 0]
+c = [1, 2]
 A = [
-    [1, 1, 1],
+    [1, 1],
 ]
 b = [8]
 eps = 1e-3
