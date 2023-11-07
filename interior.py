@@ -49,7 +49,7 @@ def find_particular_solution(A, b):
     Finds the particular solution
     :param A: matrix
     :param b: vector
-    :return: particular solution: vector
+    :return: particular solution
     """
     n, m = A.shape
     orders = set(range(m))
@@ -92,23 +92,28 @@ def projected_gradient(A, c):
 def print_solution(x, rnd=3):
     """
     Prints the current solution
-    :param x: solution: vector
-    :param rnd: round parameter: int
+    :param x: solution
+    :param rnd: round parameter
     :return: None
     """
-    print('\n'.join(f'x{i} = {round(v, rnd)}' for (i, v) in enumerate(x.T[0])))
+    for i, v in enumerate(x.T[0]):
+        print(f'x{i + 1} = {round(v, rnd)}')
 
 
-def interior_point(A: np.ndarray, c: np.ndarray, b: np.ndarray, eps: float, alpha: float = 0.5) -> np.ndarray:
+def interior_point(c, A, b, eps, alpha=0.5):
     """
     Solving the problem with interior point algorithm
-    :param A: A matrix of coefficients of constraint function
     :param c: A vector of coefficients of objective function
+    :param A: A matrix of coefficients of constraint function
     :param b: A vector of right-hand side numbers
     :param eps: The approximation accuracy
     :param alpha: gradient coefficient
     :return:
     """
+    c = np.array([[float(i) for i in c]]).T
+    A = np.array([[float(j) for j in i] for i in A])
+    b = np.array([[float(i) for i in b]]).T
+    A, b = simple(A, b)
     x = find_particular_solution(A, b)
     if np.min(x.T) < -EPS:
         no_solution()
@@ -124,34 +129,13 @@ def interior_point(A: np.ndarray, c: np.ndarray, b: np.ndarray, eps: float, alph
         c_ = D @ c
         cp = projected_gradient(A_, c_)
         v = np.min(cp)
-        # the gradient is too small
         if v > -eps:
-            return x
+            break
         x_ -= alpha / v * cp
         x = D @ x_
         iteration += 1
-
-
-def run(c, A, b, eps, alpha=0.5):
-    """
-    Solve the problem by interior point algorithm.
-    :param c: A vector of coefficients of objective function
-    :param A: A matrix of coefficients of constraint function
-    :param b: A vector of right-hand side numbers
-    :param eps: The approximation accuracy
-    :param alpha: gradient coefficient
-    :return: None
-    """
-    # convert input data to matrices
-    c = np.array([[float(i) for i in c]]).T
-    A = np.array([[float(j) for j in i] for i in A])
-    b = np.array([[float(i) for i in b]]).T
-    # simplification of matrix
-    A, b = simple(A, b)
-    # solve the problem
-    x = interior_point(A, c, b, eps, alpha)
-    # print the result
     print('Optimal Solution:')
     print_solution(x)
     print('Optimal Value:')
     print(round((c.T @ x)[0][0], 3))
+    return x
